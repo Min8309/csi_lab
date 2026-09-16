@@ -1,0 +1,11 @@
+﻿check,value
+total_rows,9908
+start_year,1990
+end_year,2022
+crime_type_count,860
+missing_year_count,0
+duplicate_count,0
+missing_occurrence,100
+missing_arrest,218
+missing_clearance_rate,4445
+clearance_rate_over_100,1390
