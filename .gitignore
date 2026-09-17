@@ -9,7 +9,7 @@ __pycache__/
 .streamlit/secrets.toml
 
 # YOLO 모델 파일
-*.pt
+# *.pt
 
 # VSCode 설정
 .vscode/
