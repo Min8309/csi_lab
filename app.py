@@ -11,6 +11,7 @@ import base64
 def load_yolo_model():
     return YOLO("yolo11n.pt")
 
+yolo_model = load_yolo_model()
 
 YOLO_KR_NAMES = {
     "person": "사람",
@@ -26,7 +27,12 @@ YOLO_KR_NAMES = {
     "tv": "TV",
     "remote": "리모컨",
     "book": "책",
-    "potted plant": "화분"
+    "potted plant": "화분",
+    "car": "자동차",
+    "motorcycle": "오토바이",
+    "bus": "버스",
+    "truck": "트럭",
+    "bicycle": "자전거"
 }
 
 
@@ -71,12 +77,14 @@ if BACKGROUND_IMAGE.exists():
     f"""
     <style>
 
-    /* 전체 배경 */
+    /* =========================
+       전체 배경
+       ========================= */
     [data-testid="stAppViewContainer"] {{
         background-image:
             linear-gradient(
-                rgba(255, 255, 255, 0.68),
-                rgba(255, 255, 255, 0.68)
+                rgba(255, 255, 255, 0.35),
+                rgba(255, 255, 255, 0.35)
             ),
             url("data:image/png;base64,{encoded_image}");
 
@@ -91,44 +99,114 @@ if BACKGROUND_IMAGE.exists():
         background: rgba(0, 0, 0, 0);
     }}
 
-    /* 메인 콘텐츠 영역 */
+
+    /* =========================
+       메인 콘텐츠 영역
+       기존 0.50 → 0.72로 수정
+       ========================= */
     [data-testid="stMainBlockContainer"] {{
-        background: rgba(255, 255, 255, 0.50);
+        background: rgba(255, 255, 255, 0.72);
         border-radius: 18px;
         padding: 2rem 2.2rem;
         margin-top: 1rem;
         margin-bottom: 2rem;
 
         box-shadow:
-            0 8px 30px rgba(0, 0, 0, 0.08);
+            0 8px 30px rgba(0, 0, 0, 0.10);
 
-        backdrop-filter: blur(2px);
+        backdrop-filter: blur(3px);
     }}
 
-    /* 일반 글자 조금 더 선명하게 */
+
+    /* =========================
+       일반 본문 글씨
+       ========================= */
     [data-testid="stMainBlockContainer"] p {{
-        color: #20242b;
+        color: #17212b;
+        font-weight: 500;
     }}
 
-    /* 제목 */
+
+    /* =========================
+       제목
+       ========================= */
     [data-testid="stMainBlockContainer"] h1,
     [data-testid="stMainBlockContainer"] h2,
     [data-testid="stMainBlockContainer"] h3 {{
-        color: #151a22;
+        color: #111820;
         font-weight: 700;
     }}
-     /* Interactive CASE 카드 */
-    [data-testid="stVerticalBlockBorderWrapper"] {{
-        background: rgba(248, 246, 240, 0.88);
-        border: 1px solid rgba(70, 70, 70, 0.18) !important;
-        border-radius: 14px;
-        padding: 6px;
-        box-shadow: 0 4px 14px rgba(0, 0, 0, 0.08);
+
+
+    /* =========================
+       작은 설명 / caption
+       새로 추가
+       ========================= */
+    [data-testid="stCaptionContainer"] {{
+        color: #394550 !important;
     }}
 
-    
+    [data-testid="stCaptionContainer"] p {{
+        color: #394550 !important;
+        font-weight: 600 !important;
+        opacity: 1 !important;
+    }}
 
-    </style>
+
+    /* =========================
+       selectbox / slider 등의 라벨
+       새로 추가
+       ========================= */
+    [data-testid="stWidgetLabel"] p {{
+        color: #17212b !important;
+        font-weight: 600 !important;
+        opacity: 1 !important;
+    }}
+
+
+    /* =========================
+       Selectbox 내부
+       새로 추가
+       ========================= */
+    [data-baseweb="select"] > div {{
+        background: rgba(255, 255, 255, 0.96);
+        color: #17212b;
+    }}
+
+
+    /* =========================
+       Interactive CASE 카드
+       ========================= */
+    [data-testid="stVerticalBlockBorderWrapper"] {{
+        background: rgba(245, 248, 250, 0.96);
+        border: 1px solid rgba(30, 45, 60, 0.30) !important;
+        border-radius: 12px;
+        padding: 12px;
+
+        box-shadow:
+            0 5px 16px rgba(0, 0, 0, 0.14);
+    }}
+
+
+    /* =========================
+       CASE 카드 안 설명글
+       새로 추가
+       ========================= */
+    [data-testid="stVerticalBlockBorderWrapper"] p {{
+        color: #18222c !important;
+        opacity: 1 !important;
+    }}
+
+
+    /* =========================
+       버튼 글씨
+       새로 추가
+       ========================= */
+    [data-testid="stButton"] button {{
+        font-weight: 600;
+    }}
+
+</style>
     """,
     unsafe_allow_html=True
 )
@@ -205,42 +283,112 @@ region_df = load_region_data()
 # =========================================================
 
 CASE_INFO = {
-
     "CASE-BURGLARY": {
         "title": "심야의 침입자",
         "crime": "야간주거침입절도",
-        "region_crime": "절도",
-        "description":
+        "description": (
             "새벽 시간 발생한 침입 사건. "
             "현장에 남겨진 단서를 조사하세요."
+        ),
+        "region_crime": "절도",
+        "cctv_image": "cctv_burglary.png"
     },
 
     "CASE-ROBBERY": {
         "title": "사라진 가방",
         "crime": "강도",
-        "region_crime": "강도",
-        "description":
+        "description": (
             "피해자의 가방이 사라졌습니다. "
             "현장의 단서와 실제 데이터를 비교하세요."
+            
+        ),
+        "region_crime": "강도",
+        "cctv_image": "cctv_robbery.png"
     },
 
     "CASE-ARSON": {
         "title": "불길 속의 흔적",
         "crime": "방화",
-        "region_crime": "방화",
-        "description":
+        "description": (
             "화재 현장에 남은 흔적을 조사하고 "
             "관련 범죄 데이터를 확인하세요."
+        ),
+        "region_crime": "방화",
+        "cctv_image": "cctv_arson.png"
     },
 
     "CASE-FRAUD": {
         "title": "의문의 거래",
         "crime": "사기",
-        "region_crime": "사기",
-        "description":
+        "description": (
             "수상한 거래 기록이 발견되었습니다. "
             "데이터 속 패턴을 추적하세요."
+        ),
+        "region_crime": "사기",
+        "cctv_image": "cctv_fraud.png"
     }
+}
+WITNESS_DATA = {
+    "CASE-BURGLARY": {
+        "intro": "늦은 시간에 현장 근처에서 누군가 빠르게 이동하는 모습을 봤습니다.",
+        "time": "정확하지는 않지만 자정 무렵이었던 것 같습니다.",
+        "object": "한쪽 어깨에 어두운색 가방을 메고 있었던 것 같습니다.",
+        "direction": "건물 뒤편 골목 방향으로 빠르게 이동했습니다."
+    },
+
+    "CASE-ROBBERY": {
+        "intro": "현장 근처에서 한 사람이 급하게 뛰어가는 모습을 봤습니다.",
+        "time": "밤 10시쯤이었던 것으로 기억합니다.",
+        "object": "가방처럼 보이는 물건을 들고 있었습니다.",
+        "direction": "대로변 쪽으로 뛰어갔습니다."
+    },
+
+    "CASE-ARSON": {
+        "intro": "연기가 보이기 전에 건물 근처에서 사람 한 명을 봤습니다.",
+        "time": "불이 보이기 약 10분 전쯤이었던 것 같습니다.",
+        "object": "손에 작은 가방 같은 것이 있었지만 정확히 보지는 못했습니다.",
+        "direction": "건물 뒤쪽으로 이동했습니다."
+    },
+
+    "CASE-FRAUD": {
+        "intro": "건물 근처에서 누군가 서류를 들고 이동하는 모습을 봤습니다.",
+        "time": "점심시간이 지난 오후였던 것 같습니다.",
+        "object": "서류봉투 같은 것을 들고 있었습니다.",
+        "direction": "건물 출입구 쪽으로 이동했습니다."
+    }
+}
+# =========================================================
+# 🛡 SAFETY LAB 예방 행동 가이드
+# =========================================================
+
+SAFETY_GUIDE = {
+    "절도": [
+        "외출 전 출입문과 창문의 잠금 상태를 확인하세요.",
+        "귀중품은 외부에서 쉽게 보이지 않도록 보관하세요.",
+        "공동출입구의 문이 열린 채 방치되지 않도록 확인하세요.",
+        "의심스러운 상황에서는 직접 대응하기보다 안전한 장소에서 신고하세요."
+    ],
+
+    "강도": [
+        "늦은 시간에는 주변이 잘 보이고 통행이 있는 경로를 이용하세요.",
+        "귀중품을 외부에 과도하게 노출하지 않도록 주의하세요.",
+        "위협 상황에서는 물건을 지키기 위해 무리하게 대응하지 마세요.",
+        "안전한 장소로 이동한 뒤 필요한 경우 경찰에 신고하세요."
+    ],
+
+    "방화": [
+        "건물의 비상구와 대피 경로를 미리 확인하세요.",
+        "화재를 발견하면 주변에 알리고 안전한 장소로 우선 대피하세요.",
+        "직접 진압하기 어려운 화재에는 무리하게 접근하지 마세요.",
+        "화재 발생 시 안전한 장소에서 119에 신고하세요."
+    ],
+
+    "사기": [
+        "금전이나 개인정보를 요구하는 연락은 발신자를 다시 확인하세요.",
+        "의심스러운 링크나 첨부파일을 바로 열지 마세요.",
+        "송금 전 상대방과 거래 정보를 별도의 방법으로 확인하세요.",
+        "피해가 의심되면 관련 금융기관이나 신고기관에 신속히 문의하세요."
+    ]
 }
 # =========================================================
 # 게임 페이지 상태
@@ -278,6 +426,9 @@ if "final_deduction" not in st.session_state:
 
 if "case_submitted" not in st.session_state:
     st.session_state.case_submitted = False
+
+if "evidence_comparison_found" not in st.session_state:
+    st.session_state.evidence_comparison_found = False
 # =========================================================
 # 게임 페이지 이동 함수
 # =========================================================
@@ -297,6 +448,7 @@ def go_home():
     st.session_state.evidence_found = False
     st.session_state.investigation_view = None
     st.session_state.collected_evidence = []
+    st.session_state.evidence_comparison_found = False
 # =========================================================
 # 제목
 # =========================================================
@@ -316,34 +468,32 @@ st.divider()
 
 if st.session_state.page == "home":
 
-    st.header("🎮 Interactive CASE")
+    st.divider()
 
-    st.write(
-        "수사할 사건을 선택하세요."
-    )
+    st.subheader("🎮 Interactive CASE")
+    st.caption("수사할 사건을 선택하세요.")
 
     cols = st.columns(4)
 
-for col, (case_id, info) in zip(
-    cols,
-    CASE_INFO.items()
-):
-    with col:
+    for col, (case_id, info) in zip(
+        cols,
+        CASE_INFO.items()
+    ):
+        with col:
 
-        with st.container(border=True):
+            with st.container(border=True):
 
-            st.subheader(info["title"])
-            st.caption(info["crime"])
-            st.write(info["description"])
+                st.subheader(info["title"])
+                st.caption(info["crime"])
+                st.write(info["description"])
 
-            if st.button(
-                "사건 시작",
-                key=f"start_{case_id}",
-                use_container_width=True
-            ):
-                open_case(case_id)
-                st.rerun()
-    
+                if st.button(
+                    "사건 시작",
+                    key=f"start_{case_id}",
+                    use_container_width=True
+                ):
+                    open_case(case_id)
+                    st.rerun()
 
 
 # =========================================================
@@ -760,152 +910,383 @@ if (
                 - 다른 증거와 비교 분석 필요
                 """
             )
-   # =====================================================
+       # =====================================================
     # 📷 CCTV 조사 결과
     # =====================================================
 
     if st.session_state.investigation_view == "cctv":
 
-            st.divider()
+        st.divider()
 
-            st.subheader("📷 CCTV EVIDENCE")
+        st.subheader("📷 CCTV EVIDENCE")
 
-            st.caption(
-                "※ 아래 내용은 CSI LAB 게임을 위한 가상화된 사건 증거입니다."
-            )
+        st.caption(
+            "※ 아래 CCTV 이미지와 내용은 CSI LAB 게임을 위한 "
+            "가상화된 사건 증거입니다."
+        )
 
-            st.info(
-                f"{case_city} {case_district} 사건 현장 주변의 "
-                "CCTV 기록을 분석합니다."
-            )
+        st.info(
+            f"{case_city} {case_district} 사건 현장 주변의 "
+            "CCTV 기록을 분석합니다."
+        )
 
-            st.markdown("### 🎞 CCTV 기록 #01")
+        st.markdown("### 🎞 CCTV 기록 #01")
 
-            st.write(
-                "사건 발생 추정 시간대에 현장 주변을 지나가는 "
-                "인물과 물체가 기록되어 있습니다."
-            )
+        # -------------------------------------------------
+        # 현재 CASE에 연결된 CCTV 이미지
+        # -------------------------------------------------
 
-            st.write(
-                "영상 속에서 사건과 관련될 가능성이 있는 "
-                "단서를 확인하세요."
-            )
+        cctv_filename = case["cctv_image"]
 
-            if st.button(
-                "🔎 CCTV 단서 발견",
-                key="find_cctv_evidence",
+        cctv_path = (
+            BASE_DIR
+            / "img"
+            / cctv_filename
+        )
+
+        if cctv_path.exists():
+
+            st.image(
+                str(cctv_path),
+                caption=(
+                    f"{case['title']} · "
+                    "가상 CCTV 조사 화면"
+                ),
                 use_container_width=True
-            ):
+            )
 
-                st.session_state.evidence_found = True
+        else:
 
-                if "CCTV 기록" not in st.session_state.collected_evidence:
-                    st.session_state.collected_evidence.append(
-                        "CCTV 기록"
+            st.warning(
+                f"CCTV 이미지 파일을 찾을 수 없습니다: "
+                f"{cctv_filename}"
+            )
+
+        st.write(
+            "사건 발생 추정 시간대에 현장 주변을 지나가는 "
+            "인물과 물체가 기록되어 있습니다."
+        )
+
+        st.write(
+            "영상 속에서 사건과 관련될 가능성이 있는 "
+            "시각적 단서를 확인하세요."
+        )
+                # -------------------------------------------------
+        # 🔬 YOLO CCTV 분석
+        # -------------------------------------------------
+
+        st.markdown("### 🔬 AI CCTV OBJECT ANALYSIS")
+
+        st.caption(
+            "YOLO는 영상 속에서 관찰 가능한 객체만 탐지합니다. "
+            "탐지된 객체가 사건과 관련 있다는 의미는 아닙니다."
+        )
+
+        if st.button(
+            "🔬 YOLO CCTV 분석",
+            key=f"analyze_cctv_yolo_{case_id}",
+            use_container_width=True
+        ):
+
+            if cctv_path.exists():
+
+                with st.spinner(
+                    "CCTV 프레임에서 객체를 탐지하고 있습니다..."
+                ):
+
+                    results = yolo_model(
+                        str(cctv_path)
                     )
 
-                st.rerun()
+                    result = results[0]
 
-            if "CCTV 기록" in st.session_state.collected_evidence:
+                    # YOLO 박스가 그려진 이미지
+                    annotated_image = result.plot()
 
-                st.success(
-                    "✅ CCTV에서 단서를 발견했습니다."
+                    # BGR → RGB
+                    annotated_image = annotated_image[:, :, ::-1]
+
+                    # 탐지 객체 저장
+                    detected_objects = []
+
+                    for box in result.boxes:
+
+                        class_id = int(
+                            box.cls[0].item()
+                        )
+
+                        confidence = float(
+                            box.conf[0].item()
+                        )
+
+                        object_name = result.names[
+                            class_id
+                        ]
+
+                        object_name_kr = YOLO_KR_NAMES.get(
+                            object_name,
+                            object_name
+                        )
+
+                        detected_objects.append({
+                            "name": object_name,
+                            "name_kr": object_name_kr,
+                            "confidence": confidence
+                        })
+
+                    st.session_state.cctv_yolo_image = (
+                        annotated_image
+                    )
+
+                    st.session_state.cctv_yolo_objects = (
+                        detected_objects
+                    )
+
+            st.rerun()
+                # -------------------------------------------------
+        # YOLO 분석 결과 표시
+        # -------------------------------------------------
+
+        if "cctv_yolo_image" in st.session_state:
+
+            st.success(
+                "✅ CCTV 객체 탐지가 완료되었습니다."
+            )
+
+            st.image(
+                st.session_state.cctv_yolo_image,
+                caption="YOLO CCTV 객체 탐지 결과",
+                use_container_width=True
+            )
+
+            detected_objects = (
+                st.session_state.get(
+                    "cctv_yolo_objects",
+                    []
+                )
+            )
+
+            if detected_objects:
+
+                st.markdown("#### 🔎 탐지된 객체")
+
+                                # 같은 종류의 객체끼리 묶기
+                grouped_objects = {}
+
+                for obj in detected_objects:
+
+                    object_name = obj["name"]
+
+                    if object_name not in grouped_objects:
+                        grouped_objects[object_name] = {
+                            "name": object_name,
+                            "name_kr": obj["name_kr"],
+                            "count": 0,
+                            "max_confidence": 0
+                        }
+
+                    grouped_objects[object_name]["count"] += 1
+
+                    grouped_objects[object_name]["max_confidence"] = max(
+                        grouped_objects[object_name]["max_confidence"],
+                        obj["confidence"]
+                    )
+
+                # 묶은 객체 표시
+                for object_name, obj in grouped_objects.items():
+
+                    st.markdown(
+                        f"**🔎 {obj['name_kr']} "
+                        f"({obj['name']})**"
+                    )
+
+                    st.write(
+                        f"탐지 수: {obj['count']}개 · "
+                        f"최고 신뢰도: "
+                        f"{obj['max_confidence']:.0%}"
+                    )
+
+                    evidence_name = (
+                        f"CCTV YOLO 탐지: "
+                        f"{obj['name_kr']} "
+                        f"({obj['count']}개)"
+                    )
+
+                    if st.button(
+                        f"🧩 {obj['name_kr']} 증거 후보 수집",
+                        key=(
+                            f"collect_cctv_yolo_"
+                            f"{case_id}_{object_name}"
+                        ),
+                        use_container_width=True
+                    ):
+
+                        if (
+                            evidence_name
+                            not in
+                            st.session_state.collected_evidence
+                        ):
+                            st.session_state.collected_evidence.append(
+                                evidence_name
+                            )
+
+                        st.rerun()
+
+                    if (
+                        evidence_name
+                        in st.session_state.collected_evidence
+                    ):
+                        st.success(
+                            f"✅ {obj['name_kr']}을 "
+                            "시각 증거 후보로 수집했습니다."
+                        )
+
+                st.caption(
+                    "※ YOLO 객체 탐지는 화면에서 관찰 가능한 "
+                    "객체만 식별합니다. 탐지 결과만으로 사건 관련성, "
+                    "인물의 역할 또는 범죄 여부를 판단하지 않습니다."
                 )
 
-                st.markdown(
-                    """
-                    **수집된 단서**
+            else:
 
-                    - 사건 발생 추정 시간대의 CCTV 기록
-                    - 현장 주변에서 움직이는 인물 또는 물체 확인
-                    - 추가 분석이 필요한 시각 증거
-                    """
+                st.info(
+                    "YOLO가 탐지한 객체가 없습니다."
                 )
 
-    # =====================================================
-    # 📝 목격자 조사 결과
-    # =====================================================
+        # -------------------------------------------------
+        # CCTV 기록 수집
+        # -------------------------------------------------
+
+        cctv_evidence = (
+            f"CCTV 기록: {case['title']} 현장 주변 영상"
+        )
+
+        if st.button(
+            "🔎 CCTV 단서 발견",
+            key="find_cctv_evidence",
+            use_container_width=True
+        ):
+
+            st.session_state.evidence_found = True
+
+            if (
+                cctv_evidence
+                not in st.session_state.collected_evidence
+            ):
+                st.session_state.collected_evidence.append(
+                    cctv_evidence
+                )
+
+            st.rerun()
+
+        # -------------------------------------------------
+        # 수집 완료 표시
+        # -------------------------------------------------
+
+        if (
+            cctv_evidence
+            in st.session_state.collected_evidence
+        ):
+
+            st.success(
+                "✅ CCTV 기록을 시각 증거로 수집했습니다."
+            )
+
+            st.markdown(
+                """
+                **수집된 단서**
+
+                - 사건 발생 추정 시간대의 CCTV 기록
+                - 현장 주변의 인물 또는 물체가 포함된 시각 자료
+                - 다른 증거와 비교 분석이 필요한 후보 단서
+                """
+            )
 
     if st.session_state.investigation_view == "witness":
 
-            st.divider()
+        st.divider()
+        st.subheader("📝 WITNESS INTERVIEW")
 
-            st.subheader("📝 WITNESS INTERVIEW")
+        st.caption(
+            "※ 아래 목격자와 진술은 CSI LAB 게임을 위한 "
+            "가상화된 사건 정보입니다."
+        )
 
-            st.caption(
-                "※ 아래 목격자와 진술은 CSI LAB 게임을 위한 "
-                "가상화된 사건 정보입니다."
+        st.info(
+            f"{case_city} {case_district} 사건과 관련된 "
+            "목격자 진술을 조사합니다."
+        )
+
+        witness = WITNESS_DATA[case_id]
+
+        st.markdown("### 👤 목격자 A")
+
+        st.write(
+            f'“{witness["intro"]}”'
+        )
+
+        question = st.radio(
+            "어떤 질문을 하시겠습니까?",
+            [
+                "몇 시쯤 목격했나요?",
+                "무엇을 들고 있었나요?",
+                "어느 방향으로 이동했나요?"
+            ],
+            key="witness_question"
+        )
+
+        if question == "몇 시쯤 목격했나요?":
+
+            answer = witness["time"]
+
+            evidence_name = (
+                f"목격자 진술(시간): {answer}"
             )
 
-            st.info(
-                f"{case_city} {case_district} 사건과 관련된 "
-                "목격자 진술을 조사합니다."
+        elif question == "무엇을 들고 있었나요?":
+
+            answer = witness["object"]
+
+            evidence_name = (
+                f"목격자 진술(물체): {answer}"
             )
 
-            st.markdown("### 👤 목격자 A")
+        else:
 
-            st.write(
-                "“늦은 시간에 현장 근처에서 누군가 빠르게 "
-                "이동하는 모습을 봤습니다.”"
+            answer = witness["direction"]
+
+            evidence_name = (
+                f"목격자 진술(이동): {answer}"
             )
 
-            question = st.radio(
-                "어떤 질문을 하시겠습니까?",
-                [
-                    "몇 시쯤 목격했나요?",
-                    "무엇을 들고 있었나요?",
-                    "어느 방향으로 이동했나요?"
-                ],
-                key="witness_question"
-            )
+        st.info(
+            f"👤 목격자: {answer}"
+        )
 
-            if question == "몇 시쯤 목격했나요?":
-
-                st.info(
-                    "👤 목격자: 정확하지는 않지만 "
-                    "자정 무렵이었던 것 같습니다."
-                )
-
-            elif question == "무엇을 들고 있었나요?":
-
-                st.info(
-                    "👤 목격자: 손에 무언가를 들고 있었지만 "
-                    "정확히 무엇인지는 보지 못했습니다."
-                )
-
-            elif question == "어느 방향으로 이동했나요?":
-
-                st.info(
-                    "👤 목격자: 현장에서 골목 방향으로 "
-                    "빠르게 이동했습니다."
-                )
-
-            if st.button(
-                "🧩 목격자 진술 수집",
-                key="collect_witness_evidence",
-                use_container_width=True
-            ):
-
-                evidence_name = "목격자 진술: 자정 무렵 인물 목격"
-
-                if (
-                    evidence_name
-                    not in st.session_state.collected_evidence
-                ):
-                    st.session_state.collected_evidence.append(
-                        evidence_name
-                    )
-
-                st.rerun()
+        if st.button(
+            "🧩 현재 진술 수집",
+            key="collect_witness_evidence",
+            use_container_width=True
+        ):
 
             if (
-                "목격자 진술: 자정 무렵 인물 목격"
-                in st.session_state.collected_evidence
+                evidence_name
+                not in st.session_state.collected_evidence
             ):
+                st.session_state.collected_evidence.append(
+                    evidence_name
+                )
 
-                st.success(
-                    "✅ 목격자 진술을 증거로 수집했습니다."
-                )       
+            st.rerun()
+
+        if (
+            evidence_name
+            in st.session_state.collected_evidence
+        ):
+
+            st.success(
+                "✅ 이 목격자 진술을 증거로 수집했습니다."
+            ) 
     # =====================================================
     # 🎒 현장 물체 조사 결과
     # =====================================================
@@ -1129,7 +1510,7 @@ if (
         # =====================================================
     # 🧰 EVIDENCE BOX
     # =====================================================
-if st.session_state.page == "investigation":
+if  st.session_state.page == "investigation":
     st.divider()
 
     st.subheader("🧰 EVIDENCE BOX")
@@ -1156,6 +1537,159 @@ if st.session_state.page == "investigation":
             st.write(
                 f"**EVIDENCE {number:02d}** — {evidence}"
             )
+    # =====================================================
+    # 🔗 EVIDENCE COMPARISON
+    # CCTV YOLO ↔ 목격자 진술
+    # =====================================================
+
+    st.divider()
+
+    st.subheader("🔗 EVIDENCE COMPARISON")
+
+    st.caption(
+        "수집한 CCTV 객체 정보와 목격자 진술을 비교합니다."
+    )
+
+    collected = st.session_state.collected_evidence
+
+    # CCTV YOLO 증거
+    cctv_yolo_evidence = [
+        item for item in collected
+        if item.startswith("CCTV YOLO 탐지:")
+    ]
+
+    # 목격자 진술 증거
+    witness_evidence = [
+        item for item in collected
+        if item.startswith("목격자 진술")
+    ]
+
+    if not cctv_yolo_evidence or not witness_evidence:
+
+        st.info(
+            "💡 CCTV YOLO 증거와 목격자 진술을 각각 "
+            "1개 이상 수집하면 비교할 수 있습니다."
+        )
+
+    else:
+
+        col_compare1, col_compare2 = st.columns(2)
+
+        with col_compare1:
+
+            st.markdown("#### 📷 CCTV 객체")
+
+            for evidence in cctv_yolo_evidence:
+                st.write(f"• {evidence}")
+
+        with col_compare2:
+
+            st.markdown("#### 👤 목격자 진술")
+
+            for evidence in witness_evidence:
+                st.write(f"• {evidence}")
+
+        if st.button(
+            "🔍 두 증거 비교",
+            key="compare_cctv_witness",
+            use_container_width=True
+        ):
+
+            st.session_state.evidence_comparison_found = True
+            st.rerun()
+
+
+    if st.session_state.evidence_comparison_found:
+
+        st.markdown("### 🧠 비교 분석 결과")
+
+        matches = []
+
+        # 가방 관련
+        cctv_has_bag = any(
+            (
+                "가방" in item
+                or "backpack" in item
+                or "handbag" in item
+            )
+            for item in cctv_yolo_evidence
+        )
+
+        witness_has_bag = any(
+            (
+                "가방" in item
+                or "backpack" in item
+                or "handbag" in item
+            )
+            for item in witness_evidence
+        )
+
+        if cctv_has_bag and witness_has_bag:
+            matches.append("가방")
+
+        # 자동차 관련
+        cctv_has_car = any(
+            (
+                "자동차" in item
+                or "car" in item
+            )
+            for item in cctv_yolo_evidence
+        )
+
+        witness_has_car = any(
+            (
+                "자동차" in item
+                or "차량" in item
+                or "car" in item
+            )
+            for item in witness_evidence
+        )
+
+        if cctv_has_car and witness_has_car:
+            matches.append("자동차")
+
+        # 오토바이 관련
+        cctv_has_motorcycle = any(
+            (
+                "오토바이" in item
+                or "motorcycle" in item
+            )
+            for item in cctv_yolo_evidence
+        )
+
+        witness_has_motorcycle = any(
+            (
+                "오토바이" in item
+                or "motorcycle" in item
+            )
+            for item in witness_evidence
+        )
+
+        if cctv_has_motorcycle and witness_has_motorcycle:
+            matches.append("오토바이")
+
+        if matches:
+
+            st.success(
+                "🔎 두 조사 결과에서 공통으로 언급되거나 "
+                "관찰된 정보가 발견되었습니다."
+            )
+
+            for match in matches:
+                st.write(f"🔗 공통 관찰 정보: **{match}**")
+
+        else:
+
+            st.warning(
+                "현재 수집된 CCTV 객체와 목격자 진술에서 "
+                "명확한 공통 관찰 정보는 확인되지 않았습니다."
+            )
+
+        st.caption(
+            "※ 이 결과는 수집된 단서의 단순 비교입니다. "
+            "공통 정보가 사건 관련성, 인물의 역할 또는 "
+            "범죄 사실을 입증하지 않습니다."
+        )
 
         # =====================================================
     # 🧠 가설 세우기
@@ -1362,14 +1896,165 @@ if st.session_state.page == "investigation":
             st.progress(
                 total_score / 100
             )       
-        # =====================================================
-    # 조사 결과 화면
-    # =====================================================
-        st.caption(
-                         "※ 발생건수는 절대 건수입니다. "
-                         "이 값만으로 지역의 안전·위험도를 "
-                         "판단하지 않습니다."
-                     )
+                 # =================================================
+            # CASE SCORE 안내
+            # =================================================
+
+            st.caption(
+                "※ CASE SCORE는 수사 과정의 진행도를 나타내는 "
+                "게임 점수입니다. 실제 범죄 사실이나 추리의 정확성을 "
+                "판정하는 점수가 아닙니다."
+            )
+
+            # =================================================
+            # 🔓 REAL DATA UNLOCKED
+            # =================================================
+
+            st.divider()
+
+            st.subheader("🔓 REAL DATA UNLOCKED")
+
+            st.success(
+                "🎮 가상 CASE 수사가 완료되었습니다. "
+                "이제 실제 범죄 통계 데이터를 확인할 수 있습니다."
+            )
+
+            st.caption(
+                "※ 아래 데이터는 게임용 사건 정보가 아니라 "
+                "공공 범죄 통계 데이터에서 가져온 실제 집계 자료입니다."
+            )
+
+            # CASE와 연결된 실제 지역 범죄 유형
+            real_crime = case["region_crime"]
+
+            real_case_df = region_df[
+                (region_df["city"] == case_city)
+                & (region_df["district"] == case_district)
+                & (
+                    region_df["crime_type_original"]
+                    == real_crime
+                )
+            ].copy()
+
+            if real_case_df.empty:
+
+                st.warning(
+                    "선택한 지역과 범죄 유형에 해당하는 "
+                    "실제 통계 자료가 없습니다."
+                )
+
+            else:
+
+                real_case_df = real_case_df.sort_values(
+                    "year"
+                )
+
+                latest_row = (
+                    real_case_df
+                    .dropna(subset=["occurrence_count"])
+                    .tail(1)
+                )
+
+                st.markdown(
+                    "### 📊 실제 지역 범죄 데이터 발견"
+                )
+
+                col_real1, col_real2 = st.columns(2)
+
+                with col_real1:
+                    st.metric(
+                        "지역",
+                        f"{case_city} {case_district}"
+                    )
+
+                with col_real2:
+                    st.metric(
+                        "범죄 유형",
+                        real_crime
+                    )
+
+                if not latest_row.empty:
+
+                    latest_year = int(
+                        latest_row.iloc[0]["year"]
+                    )
+
+                    latest_count = (
+                        latest_row.iloc[0][
+                            "occurrence_count"
+                        ]
+                    )
+
+                    col_real3, col_real4 = st.columns(2)
+
+                    with col_real3:
+                        st.metric(
+                            "최근 데이터 연도",
+                            f"{latest_year}년"
+                        )
+
+                    with col_real4:
+                        st.metric(
+                            "발생건수",
+                            f"{latest_count:,.0f}건"
+                        )
+
+                st.line_chart(
+                    real_case_df.set_index("year")[
+                        "occurrence_count"
+                    ]
+                )
+
+                st.caption(
+                    "※ 발생건수는 해당 지역의 절대 발생건수입니다. "
+                    "인구·유동인구 등의 노출 규모를 보정하지 않았으므로 "
+                    "이 수치만으로 지역의 안전·위험 순위를 판단하지 않습니다."
+                )
+
+            # =================================================
+            # 🛡 SAFETY LAB
+            # =================================================
+
+            st.divider()
+
+            st.subheader("🛡 SAFETY LAB")
+
+            st.caption(
+                "실제 지역 범죄 통계를 확인한 뒤 "
+                "범죄 유형과 관련된 일반적인 예방 행동을 살펴봅니다."
+            )
+
+            st.info(
+                f"📍 {case_city} {case_district} · "
+                f"{real_crime}"
+            )
+
+            safety_items = SAFETY_GUIDE.get(
+                real_crime,
+                []
+            )
+
+            if safety_items:
+
+                st.markdown(
+                    "### 🛡 예방 행동 가이드"
+                )
+
+                for item in safety_items:
+                    st.write(f"• {item}")
+
+            else:
+
+                st.info(
+                    "현재 이 범죄 유형에 등록된 "
+                    "예방 행동 가이드가 없습니다."
+                )
+
+            st.caption(
+                "※ Safety LAB은 일반적인 범죄 예방 정보를 제공합니다. "
+                "지역의 범죄 발생건수만으로 해당 지역의 "
+                "안전 또는 위험 수준을 판정하지 않습니다."
+            ) 
         # =====================================================
     # 📁 과거 사건기록 조사 결과
     # =====================================================
