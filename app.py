@@ -61,7 +61,8 @@ st.set_page_config(
     layout="wide"
 )
 # =========================================================
-# CSI LAB 배경 이미지
+# CSI LAB UI THEME
+# poster.png 배경 + Dark Investigation Style
 # =========================================================
 
 BACKGROUND_IMAGE = BASE_DIR / "img" / "poster.png"
@@ -74,142 +75,371 @@ if BACKGROUND_IMAGE.exists():
         ).decode()
 
     st.markdown(
-    f"""
-    <style>
+        f"""
+        <style>
 
-    /* =========================
-       전체 배경
-       ========================= */
-    [data-testid="stAppViewContainer"] {{
-        background-image:
-            linear-gradient(
-                rgba(255, 255, 255, 0.35),
-                rgba(255, 255, 255, 0.35)
-            ),
-            url("data:image/png;base64,{encoded_image}");
+        /* ================================================
+           1. STREAMLIT 기본 여백
+           ================================================ */
 
-        background-size: cover;
-        background-position: center;
-        background-repeat: no-repeat;
-        background-attachment: fixed;
-    }}
-
-    /* 상단 헤더 투명 */
-    [data-testid="stHeader"] {{
-        background: rgba(0, 0, 0, 0);
-    }}
+        .block-container {{
+            max-width: 1450px;
+            padding-top: 2rem;
+            padding-bottom: 4rem;
+            padding-left: 3rem;
+            padding-right: 3rem;
+        }}
 
 
-    /* =========================
-       메인 콘텐츠 영역
-       기존 0.50 → 0.72로 수정
-       ========================= */
-    [data-testid="stMainBlockContainer"] {{
-        background: rgba(255, 255, 255, 0.72);
-        border-radius: 18px;
-        padding: 2rem 2.2rem;
-        margin-top: 1rem;
-        margin-bottom: 2rem;
+        /* ================================================
+           2. 전체 배경 - 기존 poster.png 유지
+           ================================================ */
 
-        box-shadow:
-            0 8px 30px rgba(0, 0, 0, 0.10);
+        [data-testid="stAppViewContainer"] {{
+            background-image:
+                linear-gradient(
+                    rgba(2, 8, 15, 0.58),
+                    rgba(2, 8, 15, 0.88)
+                ),
+                url("data:image/png;base64,{encoded_image}");
 
-        backdrop-filter: blur(3px);
-    }}
-
-
-    /* =========================
-       일반 본문 글씨
-       ========================= */
-    [data-testid="stMainBlockContainer"] p {{
-        color: #17212b;
-        font-weight: 500;
-    }}
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+        }}
 
 
-    /* =========================
-       제목
-       ========================= */
-    [data-testid="stMainBlockContainer"] h1,
-    [data-testid="stMainBlockContainer"] h2,
-    [data-testid="stMainBlockContainer"] h3 {{
-        color: #111820;
-        font-weight: 700;
-    }}
+        /* ================================================
+           3. Streamlit 상단 헤더
+           ================================================ */
+
+        [data-testid="stHeader"] {{
+            background: rgba(0, 0, 0, 0);
+        }}
 
 
-    /* =========================
-       작은 설명 / caption
-       새로 추가
-       ========================= */
-    [data-testid="stCaptionContainer"] {{
-        color: #394550 !important;
-    }}
+        /* ================================================
+           4. 메인 콘텐츠 영역
+           기존 흰색 박스 제거
+           ================================================ */
 
-    [data-testid="stCaptionContainer"] p {{
-        color: #394550 !important;
-        font-weight: 600 !important;
-        opacity: 1 !important;
-    }}
+        [data-testid="stMainBlockContainer"] {{
+            background: rgba(2, 8, 15, 0.42);
 
+            border: 1px solid rgba(94, 183, 230, 0.12);
 
-    /* =========================
-       selectbox / slider 등의 라벨
-       새로 추가
-       ========================= */
-    [data-testid="stWidgetLabel"] p {{
-        color: #17212b !important;
-        font-weight: 600 !important;
-        opacity: 1 !important;
-    }}
+            border-radius: 4px;
+
+            padding: 2.5rem 3rem 4rem 3rem;
+
+            margin-top: 1rem;
+            margin-bottom: 3rem;
+
+            box-shadow:
+                0 20px 60px rgba(0, 0, 0, 0.45);
+
+            backdrop-filter: blur(3px);
+        }}
 
 
-    /* =========================
-       Selectbox 내부
-       새로 추가
-       ========================= */
-    [data-baseweb="select"] > div {{
-        background: rgba(255, 255, 255, 0.96);
-        color: #17212b;
-    }}
+        /* ================================================
+           5. 기본 글씨
+           ================================================ */
+
+        [data-testid="stMainBlockContainer"] p {{
+            color: #c9d4df;
+            font-weight: 400;
+        }}
 
 
-    /* =========================
-       Interactive CASE 카드
-       ========================= */
-    [data-testid="stVerticalBlockBorderWrapper"] {{
-        background: rgba(245, 248, 250, 0.96);
-        border: 1px solid rgba(30, 45, 60, 0.30) !important;
-        border-radius: 12px;
-        padding: 12px;
+        /* ================================================
+           6. 제목
+           ================================================ */
 
-        box-shadow:
-            0 5px 16px rgba(0, 0, 0, 0.14);
-    }}
+        [data-testid="stMainBlockContainer"] h1 {{
+            color: #f4f8fb;
+            font-weight: 800;
+            letter-spacing: 5px;
+        }}
 
+        [data-testid="stMainBlockContainer"] h2 {{
+            color: #eef7fc;
+            font-weight: 700;
+            letter-spacing: 2px;
+        }}
 
-    /* =========================
-       CASE 카드 안 설명글
-       새로 추가
-       ========================= */
-    [data-testid="stVerticalBlockBorderWrapper"] p {{
-        color: #18222c !important;
-        opacity: 1 !important;
-    }}
+        [data-testid="stMainBlockContainer"] h3 {{
+            color: #e8f4fa;
+            font-weight: 650;
+        }}
 
 
-    /* =========================
-       버튼 글씨
-       새로 추가
-       ========================= */
-    [data-testid="stButton"] button {{
-        font-weight: 600;
-    }}
+        /* ================================================
+           7. Caption
+           ================================================ */
 
-</style>
-    """,
-    unsafe_allow_html=True
-)
+        [data-testid="stCaptionContainer"],
+        [data-testid="stCaptionContainer"] p {{
+            color: #8fa8ba !important;
+            opacity: 1 !important;
+            font-weight: 500 !important;
+            letter-spacing: 0.5px;
+        }}
+
+
+        /* ================================================
+           8. 입력창 라벨
+           ================================================ */
+
+        [data-testid="stWidgetLabel"] p {{
+            color: #c8d7e2 !important;
+            font-weight: 600 !important;
+            opacity: 1 !important;
+        }}
+
+
+                /* ================================================
+           9. Selectbox
+           ================================================ */
+
+        /* 닫힌 선택창 */
+        div[data-baseweb="select"] > div {{
+            background-color: #f4f6f8 !important;
+            border: 1px solid rgba(91, 190, 238, 0.55) !important;
+        }}
+
+        /* 선택된 값 - 핵심 */
+        div[data-baseweb="select"] div[aria-selected="true"] {{
+            color: #07131e !important;
+        }}
+
+        div[data-baseweb="select"] div[aria-selected="true"] * {{
+            color: #07131e !important;
+        }}
+
+        /* Streamlit Selectbox 선택값 */
+        div[data-baseweb="select"] > div > div {{
+            color: #07131e !important;
+            -webkit-text-fill-color: #07131e !important;
+            opacity: 1 !important;
+        }}
+
+        div[data-baseweb="select"] > div > div > div {{
+            color: #07131e !important;
+            -webkit-text-fill-color: #07131e !important;
+            opacity: 1 !important;
+        }}
+
+        /* input이 사용되는 Streamlit 버전 대응 */
+        div[data-baseweb="select"] input {{
+            color: #07131e !important;
+            -webkit-text-fill-color: #07131e !important;
+            opacity: 1 !important;
+        }}
+
+        /* 화살표 */
+        div[data-baseweb="select"] svg {{
+            fill: #123247 !important;
+            color: #123247 !important;
+        }}
+
+        /* 펼쳐진 메뉴 */
+        [data-baseweb="popover"] {{
+            background-color: #07131e !important;
+        }}
+
+        [role="listbox"] {{
+            background-color: #07131e !important;
+        }}
+
+        [role="option"] {{
+            background-color: #07131e !important;
+            color: #ffffff !important;
+        }}
+
+        [role="option"] * {{
+            color: #ffffff !important;
+            -webkit-text-fill-color: #ffffff !important;
+        }}
+
+        [role="option"]:hover {{
+            background-color: #123247 !important;
+        }}
+
+      
+
+        /* ================================================
+           10. CASE / EVIDENCE 카드
+           ================================================ */
+
+        [data-testid="stVerticalBlockBorderWrapper"] {{
+            background:
+                linear-gradient(
+                    180deg,
+                    rgba(7, 18, 29, 0.88),
+                    rgba(3, 9, 16, 0.95)
+                );
+
+            border:
+                1px solid rgba(105, 176, 214, 0.25) !important;
+
+            border-radius: 3px;
+
+            padding: 14px;
+
+            box-shadow:
+                0 12px 30px rgba(0, 0, 0, 0.40);
+
+            transition:
+                transform 0.25s ease,
+                border 0.25s ease,
+                box-shadow 0.25s ease;
+        }}
+
+
+        /* CASE 카드 Hover */
+
+        [data-testid="stVerticalBlockBorderWrapper"]:hover {{
+            transform: translateY(-6px);
+
+            border:
+                1px solid rgba(91, 200, 255, 0.85) !important;
+
+            box-shadow:
+                0 0 22px rgba(62, 177, 235, 0.20),
+                0 18px 40px rgba(0, 0, 0, 0.55);
+        }}
+
+
+        /* ================================================
+           11. 카드 안 글씨
+           ================================================ */
+
+        [data-testid="stVerticalBlockBorderWrapper"] p {{
+            color: #b9c9d4 !important;
+        }}
+
+        [data-testid="stVerticalBlockBorderWrapper"] h3 {{
+            color: #ffffff !important;
+        }}
+
+
+        /* ================================================
+           12. 버튼
+           ================================================ */
+
+        [data-testid="stButton"] button {{
+            background: rgba(5, 15, 24, 0.90);
+
+            color: #d9f2ff;
+
+            border:
+                1px solid rgba(102, 192, 235, 0.55);
+
+            border-radius: 2px;
+
+            min-height: 44px;
+
+            font-weight: 650;
+
+            letter-spacing: 1px;
+
+            transition: all 0.20s ease;
+        }}
+
+
+        [data-testid="stButton"] button:hover {{
+            background: rgba(20, 91, 125, 0.40);
+
+            color: #ffffff;
+
+            border-color: #63c8f5;
+
+            box-shadow:
+                0 0 18px rgba(75, 190, 240, 0.30);
+        }}
+
+
+        /* ================================================
+           13. Metric
+           ================================================ */
+
+        [data-testid="stMetric"] {{
+            background: rgba(4, 14, 23, 0.82);
+
+            border:
+                1px solid rgba(88, 170, 210, 0.20);
+
+            padding: 15px;
+
+            border-radius: 3px;
+        }}
+
+        [data-testid="stMetricLabel"] {{
+            color: #8ca8b9;
+        }}
+
+        [data-testid="stMetricValue"] {{
+            color: #edf8ff;
+        }}
+
+
+        /* ================================================
+           14. 구분선
+           ================================================ */
+
+        hr {{
+            border-color:
+                rgba(91, 176, 220, 0.18) !important;
+        }}
+
+
+        /* ================================================
+           15. 입력창
+           ================================================ */
+
+        textarea,
+        input {{
+            color: #edf7fc !important;
+        }}
+
+
+        /* ================================================
+           16. Alert / Info
+           ================================================ */
+
+        [data-testid="stAlert"] {{
+            background:
+                rgba(6, 22, 34, 0.88);
+
+            color: #d7e8f2;
+
+            border:
+                1px solid rgba(91, 176, 220, 0.20);
+        }}
+
+
+        /* ================================================
+           17. 모바일
+           ================================================ */
+
+        @media (max-width: 900px) {{
+
+            .block-container {{
+                padding-left: 1rem;
+                padding-right: 1rem;
+            }}
+
+            [data-testid="stMainBlockContainer"] {{
+                padding: 1.5rem;
+            }}
+        }}
+
+        </style>
+        """,
+        unsafe_allow_html=True
+    )
 
 
 # =========================================================
@@ -449,53 +679,185 @@ def go_home():
     st.session_state.investigation_view = None
     st.session_state.collected_evidence = []
     st.session_state.evidence_comparison_found = False
-# =========================================================
-# 제목
-# =========================================================
 
-st.title("🔎 CSI LAB")
-
-st.caption(
-    "게임을 하다가 실제 범죄 데이터를 발견한다"
-)
-
-st.divider()
 
 
 # =========================================================
-# HOME — Interactive CASE
+# HOME — CSI LAB CASE FILES
 # =========================================================
 
 if st.session_state.page == "home":
 
-    st.divider()
+    # =====================================================
+    # HERO
+    # =====================================================
 
-    st.subheader("🎮 Interactive CASE")
-    st.caption("수사할 사건을 선택하세요.")
+    hero_html = (
+        '<div style="text-align:center; padding:55px 10px 40px 10px;">'
+        '<div style="color:#72b9dd; font-size:13px; letter-spacing:8px; margin-bottom:18px;">'
+        'CRIME · DATA · SOLUTION'
+        '</div>'
+        '<div style="color:#ffffff; font-size:64px; font-weight:800; letter-spacing:9px; line-height:1;">'
+        'CSI LAB'
+        '</div>'
+        '<div style="width:90px; height:2px; margin:26px auto; background:#55b9e8;"></div>'
+        '<div style="color:#d7e2e9; font-size:17px; letter-spacing:2px; line-height:1.8;">'
+        '데이터 속 단서를 찾아,<br>더 안전한 세상을 만들어가세요.'
+        '</div>'
+        '</div>'
+    )
 
-    cols = st.columns(4)
+    st.markdown(
+        hero_html,
+        unsafe_allow_html=True
+    )
 
-    for col, (case_id, info) in zip(
-        cols,
-        CASE_INFO.items()
+    # =====================================================
+    # CASE FILES TITLE
+    # =====================================================
+    case_title_html = (
+        '<div style="text-align:center; margin:20px 0 35px 0;">'
+        '<div style="color:#789bad; font-size:11px; letter-spacing:6px; margin-bottom:10px;">'
+        'SELECT YOUR INVESTIGATION'
+        '</div>'
+        '<div style="color:#ffffff; font-size:27px; font-weight:700; letter-spacing:6px;">'
+        'CASE FILES'
+        '</div>'
+        '<div style="color:#8fa5b2; font-size:13px; margin-top:12px;">'
+        '4개의 사건 중 하나를 선택해 수사를 시작하세요.'
+        '</div>'
+        '</div>'
+    )
+
+    st.markdown(
+        case_title_html,
+        unsafe_allow_html=True
+    )
+
+    # =====================================================
+    # 4 CASE CARDS
+    # =====================================================
+
+    cols = st.columns(
+        4,
+        gap="medium"
+    )
+
+    for case_number, (
+        col,
+        (case_id, info)
+    ) in enumerate(
+        zip(
+            cols,
+            CASE_INFO.items()
+        ),
+        start=1
     ):
+
         with col:
 
-            with st.container(border=True):
+            with st.container(
+                border=True
+            ):
 
-                st.subheader(info["title"])
-                st.caption(info["crime"])
-                st.write(info["description"])
+                # CASE 번호
+                st.markdown(
+                    f"""
+<div style="
+    color:#64c8f5;
+    font-size:11px;
+    letter-spacing:3px;
+    margin-bottom:12px;">
+    CASE {case_number:02d}
+</div>
+""",
+                    unsafe_allow_html=True
+                )
 
+                # 사건 제목
+                st.markdown(
+                    f"""
+<div style="
+    color:#ffffff;
+    font-size:22px;
+    font-weight:700;
+    min-height:62px;
+    line-height:1.4;">
+    {info["title"]}
+</div>
+""",
+                    unsafe_allow_html=True
+                )
+
+                # 범죄 유형
+                st.markdown(
+                    f"""
+<div style="
+    color:#66b8df;
+    font-size:11px;
+    letter-spacing:1px;
+    margin:4px 0 17px 0;">
+    {info["crime"]}
+</div>
+""",
+                    unsafe_allow_html=True
+                )
+
+                # 사건 설명
+                st.markdown(
+                    f"""
+<div style="
+    color:#b4c1c9;
+    font-size:13px;
+    line-height:1.8;
+    min-height:100px;">
+    {info["description"]}
+</div>
+""",
+                    unsafe_allow_html=True
+                )
+
+                # 카드 장식선
+                st.markdown(
+                    """
+<div style="
+    height:1px;
+    margin:14px 0 17px 0;
+    background:linear-gradient(
+        90deg,
+        rgba(80,190,240,0.7),
+        rgba(80,190,240,0.03)
+    );">
+</div>
+""",
+                    unsafe_allow_html=True
+                )
+
+                # CASE START
                 if st.button(
-                    "사건 시작",
+                    "CASE START  →",
                     key=f"start_{case_id}",
                     use_container_width=True
                 ):
                     open_case(case_id)
                     st.rerun()
 
+    # =====================================================
+    # FOOTER
+    # =====================================================
+    footer_html = (
+        '<div style="text-align:center; margin-top:55px; padding-top:25px; '
+        'padding-bottom:10px; border-top:1px solid rgba(100,190,230,0.15);">'
+        '<span style="color:#7893a3; font-size:10px; letter-spacing:4px;">'
+        'REAL DATA · REAL CASE ANALYSIS · SAFER TOMORROW'
+        '</span>'
+        '</div>'
+    )
 
+    st.markdown(
+        footer_html,
+        unsafe_allow_html=True
+    )
 # =========================================================
 # 선택된 사건
 # =========================================================
