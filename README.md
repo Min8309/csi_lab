@@ -5,6 +5,9 @@ CSI LAB
 
 https://csilab-kr.streamlit.app/
 
+[CSI_LAB_korea.pptx](https://github.com/user-attachments/files/32494167/CSI_LAB_korea.pptx)
+
+
 CASE → EVIDENCE → AI → DATA → PREVENTION
 범죄 데이터를 어렵게 읽는 것이 아니라, 
 직접 탐색하고 발견하는 경험으로 바꾸는 것이 CSI LAB의 핵심입니다.
