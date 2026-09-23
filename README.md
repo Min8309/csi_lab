@@ -20,3 +20,16 @@ CASE의 지역·범죄 유형을 실제 공공 범죄 데이터와 연결한다.
 CASE SOLVED 이후 REAL DATA UNLOCKED → Crime Time Machine → Safety LAB으로 이어지는 것이 프로젝트의 핵심 사용자 경험이다.
 <img width="1228" height="779" alt="image" src="https://github.com/user-attachments/assets/f64bd562-c0d5-45b9-a89d-689f57306cbb" />
 <img width="706" height="707" alt="image" src="https://github.com/user-attachments/assets/2c4fff5a-f668-4e52-b768-c18cd685d74c" />
+
+<img width="909" height="447" alt="image" src="https://github.com/user-attachments/assets/b10aa1ff-4bbb-413d-9d20-02c15bddf1dc" />
+
+<img width="916" height="443" alt="image" src="https://github.com/user-attachments/assets/3b453232-a701-4c98-9dcf-1d70a93d1bd7" />
+
+<img width="912" height="474" alt="image" src="https://github.com/user-attachments/assets/701f60f9-0441-4a9c-87f0-ff6007152698" />
+
+<img width="868" height="453" alt="image" src="https://github.com/user-attachments/assets/f2cf4860-9701-4e58-b1d0-f56182c0e1c0" />
+
+<img width="884" height="442" alt="image" src="https://github.com/user-attachments/assets/73ae8051-8d83-4718-ae57-66b90eaaed46" />
+
+
+
