@@ -5,7 +5,8 @@ CSI LAB
 
 https://csilab-kr.streamlit.app/
 
-[CSI_LAB_korea.pptx](https://github.com/user-attachments/files/32494167/CSI_LAB_korea.pptx)
+[CSI_LAB_korea.pptx](https://github.com/user-attachments/files/32836175/CSI_LAB_korea.pptx)
+
 
 
 CASE → EVIDENCE → AI → DATA → PREVENTION
