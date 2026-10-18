@@ -1,0 +1,25 @@
+{
+  "workflow": "Streamlit AppTest real button and text inputs",
+  "passed_steps": [
+    "home",
+    "start_CASE-BURGLARY",
+    "start_investigation",
+    "investigate_cctv",
+    "analyze_cctv_yolo_CASE-BURGLARY",
+    "collect_cctv_yolo_CASE-BURGLARY_person",
+    "find_cctv_evidence",
+    "investigate_witness",
+    "collect_witness_evidence",
+    "hypothesis input",
+    "save_hypothesis",
+    "deduction input",
+    "submit_final_deduction"
+  ],
+  "evidence_count": 3,
+  "real_data_unlocked": true,
+  "safety_lab_rendered": true,
+  "limitations": [
+    "One representative burglary case, not all cases or all states",
+    "No education-effect or YOLO accuracy benchmark"
+  ]
+}

@@ -1,0 +1,162 @@
+[
+  {
+    "slide": 12,
+    "file": "src/05_clean_occurrence_arrest.py",
+    "start": 39,
+    "end": 55,
+    "excerpt": "def clean_number(value):\n    if pd.isna(value):\n        return pd.NA\n    value = str(value).strip()\n    if value in [\"-\", \"\", \"nan\", \"NaN\"]:\n        return pd.NA\n    value = value.replace(\",\", \"\")\n    try:\n        return float(value)\n    except ValueError:\n        return pd.NA",
+    "url": "https://github.com/Min8309/csi_lab/blob/6b46bd6cc5cdccb32e78ae2f7283a4b4f9dcfa5f/src/05_clean_occurrence_arrest.py#L39-L55"
+  },
+  {
+    "slide": 13,
+    "file": "src/05_clean_occurrence_arrest.py",
+    "start": 123,
+    "end": 129,
+    "excerpt": "long_df = df.melt(\n    id_vars=[\"죄종별\", \"metric\"],\n    value_vars=year_columns,\n    var_name=\"year_raw\",\n    value_name=\"value\"\n)",
+    "url": "https://github.com/Min8309/csi_lab/blob/6b46bd6cc5cdccb32e78ae2f7283a4b4f9dcfa5f/src/05_clean_occurrence_arrest.py#L123-L129"
+  },
+  {
+    "slide": 14,
+    "file": "src/08_2_refine_crime_groups.py",
+    "start": 335,
+    "end": 337,
+    "excerpt": "df[\"include_detail_analysis\"] = (\n    ~df[\"is_aggregate\"]\n)",
+    "url": "https://github.com/Min8309/csi_lab/blob/6b46bd6cc5cdccb32e78ae2f7283a4b4f9dcfa5f/src/08_2_refine_crime_groups.py#L335-L337"
+  },
+  {
+    "slide": 15,
+    "file": "src/07_build_analysis_dataset.py",
+    "start": 64,
+    "end": 74,
+    "excerpt": "df[\"calculated_clearance_rate\"] = np.where(\n    (df[\"occurrence_count\"].notna())\n    & (df[\"arrest_count\"].notna())\n    & (df[\"occurrence_count\"] > 0),\n    df[\"arrest_count\"]\n    / df[\"occurrence_count\"]\n    * 100,\n    np.nan\n)",
+    "url": "https://github.com/Min8309/csi_lab/blob/6b46bd6cc5cdccb32e78ae2f7283a4b4f9dcfa5f/src/07_build_analysis_dataset.py#L64-L74"
+  },
+  {
+    "slide": 16,
+    "file": "src/09_build_real_data_evidence.py",
+    "start": 101,
+    "end": 115,
+    "excerpt": "valid_previous_year = (\n    evidence[\"previous_year\"]\n    == evidence[\"year\"] - 1\n)\nvalid_previous_value = (\n    evidence[\"previous_occurrence\"].notna()\n    & (evidence[\"previous_occurrence\"] > 0)\n)\nvalid_change = (\n    valid_previous_year\n    & valid_previous_value\n    & evidence[\"occurrence_count\"].notna()\n)",
+    "url": "https://github.com/Min8309/csi_lab/blob/6b46bd6cc5cdccb32e78ae2f7283a4b4f9dcfa5f/src/09_build_real_data_evidence.py#L101-L115"
+  },
+  {
+    "slide": 17,
+    "file": "src/09_build_real_data_evidence.py",
+    "start": 118,
+    "end": 130,
+    "excerpt": "evidence[\"yoy_change_rate\"] = np.where(\n    valid_change,\n    (\n        evidence[\"occurrence_count\"]\n        - evidence[\"previous_occurrence\"]\n    )\n    / evidence[\"previous_occurrence\"]\n    * 100,\n    np.nan\n)",
+    "url": "https://github.com/Min8309/csi_lab/blob/6b46bd6cc5cdccb32e78ae2f7283a4b4f9dcfa5f/src/09_build_real_data_evidence.py#L118-L130"
+  },
+  {
+    "slide": 18,
+    "file": "src/10_build_time_machine.py",
+    "start": 99,
+    "end": 113,
+    "excerpt": "def make_time_grade(row):\n    years = row[\"year_count\"]\n    coverage = row[\"coverage_rate\"]\n    if years >= 30 and coverage >= 90:\n        return \"30Y\"\n    if years >= 20 and coverage >= 80:\n        return \"20Y\"\n    if years >= 10 and coverage >= 70:\n        return \"10Y\"\n    return \"SHORT\"",
+    "url": "https://github.com/Min8309/csi_lab/blob/6b46bd6cc5cdccb32e78ae2f7283a4b4f9dcfa5f/src/10_build_time_machine.py#L99-L113"
+  },
+  {
+    "slide": 20,
+    "file": "src/20_build_final_region_dataset.py",
+    "start": 292,
+    "end": 300,
+    "excerpt": "if actual_regions == new_regions:\n    selected_lookup = new_lookup\n    structure_used = \"75지역_군위군포함\"\nelif actual_regions == old_regions:\n    selected_lookup = old_lookup\n    structure_used = \"74지역_군위군없음\"",
+    "url": "https://github.com/Min8309/csi_lab/blob/6b46bd6cc5cdccb32e78ae2f7283a4b4f9dcfa5f/src/20_build_final_region_dataset.py#L292-L300"
+  },
+  {
+    "slide": 21,
+    "file": "src/20_build_final_region_dataset.py",
+    "start": 498,
+    "end": 511,
+    "excerpt": "KEY = [\n    \"year\",\n    \"city\",\n    \"district\",\n    \"crime_type_original\"\n]\nresult[\"duplicate_final_key\"] = (\n    result.duplicated(\n        subset=KEY,\n        keep=False\n    )\n)",
+    "url": "https://github.com/Min8309/csi_lab/blob/6b46bd6cc5cdccb32e78ae2f7283a4b4f9dcfa5f/src/20_build_final_region_dataset.py#L498-L511"
+  },
+  {
+    "slide": 22,
+    "file": "app.py",
+    "start": 666,
+    "end": 672,
+    "excerpt": "def open_case(case_code):\n    st.session_state.selected_case = case_code\n    st.session_state.page = \"case_setup\"\n    st.session_state.investigation_started = False\n    st.session_state.investigation_view = None\n    st.session_state.collected_evidence = []",
+    "url": "https://github.com/Min8309/csi_lab/blob/6b46bd6cc5cdccb32e78ae2f7283a4b4f9dcfa5f/app.py#L666-L672"
+  },
+  {
+    "slide": 24,
+    "file": "app.py",
+    "start": 2063,
+    "end": 2072,
+    "excerpt": "evidence_count = len(\n    st.session_state.collected_evidence\n)\nif evidence_count < 3:\n    st.info(\n        \"가설을 세우려면 최소 3개의 증거를 \"\n        \"먼저 수집하세요.\"\n    )",
+    "url": "https://github.com/Min8309/csi_lab/blob/6b46bd6cc5cdccb32e78ae2f7283a4b4f9dcfa5f/app.py#L2063-L2072"
+  },
+  {
+    "slide": 25,
+    "file": "app.py",
+    "start": 10,
+    "end": 14,
+    "excerpt": "@st.cache_resource\ndef load_yolo_model():\n    return YOLO(\"yolo11n.pt\")\nyolo_model = load_yolo_model()",
+    "url": "https://github.com/Min8309/csi_lab/blob/6b46bd6cc5cdccb32e78ae2f7283a4b4f9dcfa5f/app.py#L10-L14"
+  },
+  {
+    "slide": 26,
+    "file": "app.py",
+    "start": 1359,
+    "end": 1369,
+    "excerpt": "results = yolo_model(\n    str(cctv_path)\n)\nresult = results[0]\nannotated_image = result.plot()\nannotated_image = annotated_image[:, :, ::-1]",
+    "url": "https://github.com/Min8309/csi_lab/blob/6b46bd6cc5cdccb32e78ae2f7283a4b4f9dcfa5f/app.py#L1359-L1369"
+  },
+  {
+    "slide": 28,
+    "file": "app.py",
+    "start": 1376,
+    "end": 1387,
+    "excerpt": "class_id = int(\n    box.cls[0].item()\n)\nconfidence = float(\n    box.conf[0].item()\n)\nobject_name = result.names[\n    class_id\n]",
+    "url": "https://github.com/Min8309/csi_lab/blob/6b46bd6cc5cdccb32e78ae2f7283a4b4f9dcfa5f/app.py#L1376-L1387"
+  },
+  {
+    "slide": 29,
+    "file": "app.py",
+    "start": 1485,
+    "end": 1496,
+    "excerpt": "if (\n    evidence_name\n    not in\n    st.session_state.collected_evidence\n):\n    st.session_state.collected_evidence.append(\n        evidence_name\n    )\nst.rerun()",
+    "url": "https://github.com/Min8309/csi_lab/blob/6b46bd6cc5cdccb32e78ae2f7283a4b4f9dcfa5f/app.py#L1485-L1496"
+  },
+  {
+    "slide": 30,
+    "file": "app.py",
+    "start": 1971,
+    "end": 1978,
+    "excerpt": "cctv_has_bag = any(\n    (\n        \"가방\" in item\n        or \"backpack\" in item\n        or \"handbag\" in item\n    )\n    for item in cctv_yolo_evidence\n)",
+    "url": "https://github.com/Min8309/csi_lab/blob/6b46bd6cc5cdccb32e78ae2f7283a4b4f9dcfa5f/app.py#L1971-L1978"
+  },
+  {
+    "slide": 31,
+    "file": "app.py",
+    "start": 2213,
+    "end": 2228,
+    "excerpt": "evidence_score = min(\n    evidence_count * 10,\n    50\n)\nhypothesis_score = (\n    20\n    if st.session_state.hypothesis\n    else 0\n)\ndeduction_score = (\n    30\n    if st.session_state.final_deduction\n    else 0\n)",
+    "url": "https://github.com/Min8309/csi_lab/blob/6b46bd6cc5cdccb32e78ae2f7283a4b4f9dcfa5f/app.py#L2213-L2228"
+  },
+  {
+    "slide": 32,
+    "file": "app.py",
+    "start": 2292,
+    "end": 2299,
+    "excerpt": "real_case_df = region_df[\n    (region_df[\"city\"] == case_city)\n    & (region_df[\"district\"] == case_district)\n    & (\n        region_df[\"crime_type_original\"]\n        == real_crime\n    )\n].copy()",
+    "url": "https://github.com/Min8309/csi_lab/blob/6b46bd6cc5cdccb32e78ae2f7283a4b4f9dcfa5f/app.py#L2292-L2299"
+  },
+  {
+    "slide": 35,
+    "file": "src/11_build_csi_time_machine.py",
+    "start": 162,
+    "end": 169,
+    "excerpt": "df[\"change_from_1990_pct\"] = (\n    (\n        df[\"occurrence_count\"]\n        - df[\"baseline_1990\"]\n    )\n    / df[\"baseline_1990\"]\n    * 100\n)",
+    "url": "https://github.com/Min8309/csi_lab/blob/6b46bd6cc5cdccb32e78ae2f7283a4b4f9dcfa5f/src/11_build_csi_time_machine.py#L162-L169"
+  },
+  {
+    "slide": 36,
+    "file": "app.py",
+    "start": 2925,
+    "end": 2936,
+    "excerpt": "local_df = region_df[\n    (region_df[\"city\"] == selected_city)\n    & (region_df[\"district\"] == selected_district)\n    & (\n        region_df[\"crime_type_original\"]\n        == selected_crime\n    )\n].copy()\nlocal_df = local_df.sort_values(\"year\")",
+    "url": "https://github.com/Min8309/csi_lab/blob/6b46bd6cc5cdccb32e78ae2f7283a4b4f9dcfa5f/app.py#L2925-L2936"
+  }
+]

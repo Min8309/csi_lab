@@ -1,24 +1,41 @@
-프로젝트 핵심 메시지
-CSI LAB
+# CSI LAB
 
-게임을 하다가 실제 범죄 데이터를 발견한다.
+**범죄율을 올바르게 이해하고, 범죄 데이터의 패턴을 읽는 교육 프로젝트**
 
-https://csilab-kr.streamlit.app/
+가상 사건을 조사하며 증거를 모으고, 실제 범죄 통계를 비교한 뒤 근거를 설명하는 경험을 제공합니다.
 
-[CSI_LAB_korea.pptx](https://github.com/user-attachments/files/32836175/CSI_LAB_korea.pptx)
+**CASE → EVIDENCE → AI → DATA → PREVENTION**
 
+- 4개 CASE: 심야의 침입자 · 사라진 가방 · 불길 속의 흔적 · 의문의 거래
+- 관찰과 추론: CCTV·물체·시간·목격자·지역 데이터·과거 기록 조사, 가설과 최종 추리 작성
+- 실제 데이터: 지역·범죄·연도 선택과 장기 시계열 탐색
+- Safety LAB: 범죄 유형별 일반 예방 행동 안내
 
+서비스: https://csilab-kr.streamlit.app/
 
-CASE → EVIDENCE → AI → DATA → PREVENTION
-범죄 데이터를 어렵게 읽는 것이 아니라, 
-직접 탐색하고 발견하는 경험으로 바꾸는 것이 CSI LAB의 핵심입니다.
+## 새 발표 자료
 
+첨부 참고자료는 구성과 설명 수준만 참고하고, 내용·수치·핵심 코드는 이 저장소에서 확인해 전면 개편했습니다.
 
+- [편집 가능한 PPT · 42장](docs/presentation/CSI_LAB_교육프로젝트_전면개편.pptx)
+- [PDF 미리보기](docs/presentation/CSI_LAB_교육프로젝트_전면개편.pdf)
+- [발표 원고·핵심 코드 20곳·원본 근거](docs/presentation/발표원고_근거.md)
+- [제작·검증·데이터 범위 안내](docs/presentation/README.md)
 
-Streamlit session_state로 CASE 선택부터 증거·가설·최종 추리까지 게임 상태를 관리한다.
-YOLO는 CCTV에서 사람·가방·차량 등의 객체를 탐지하지만 범인이나 범죄 여부를 판단하지 않는다.
-CASE의 지역·범죄 유형을 실제 공공 범죄 데이터와 연결한다.
-CASE SOLVED 이후 REAL DATA UNLOCKED → Crime Time Machine → Safety LAB으로 이어지는 것이 프로젝트의 핵심 사용자 경험이다.
+발표 디자인은 밝은 아이보리·청록·블루를 사용했습니다. 앱 화면 캡처는 실제 실행 화면이며 앱 자체의 테마는 별도입니다.
+
+## 지표를 읽는 기준
+
+현재 앱의 지역 지표는 **발생건수**입니다. 인구 보정 범죄율 계산은 아직 구현되어 있지 않습니다. 범죄율의 의미와 분모를 이해하는 것이 교육 목표이며, 발생건수만으로 지역의 안전·위험 순위를 판단하지 않습니다.
+
+- YOLO는 이미지의 물체를 관찰합니다. 범인·범죄 여부를 판단하지 않습니다.
+- CASE SCORE는 활동 진행도입니다. 추리의 정확성을 자동 평가하지 않습니다.
+- 가상 사건 정보와 실제 집계 통계는 구분합니다.
+- 장기 시계열은 1990–2022년, 지역 최종 CSV의 실제 보관 기간은 **2011–2024년**입니다. 지역 파일명에 포함된 1994–2024와 실제 범위가 다릅니다.
+- 학습 효과·탐지 정확도·위험 예측 성능을 검증한 수치는 제시하지 않습니다.
+
+## 기존 서비스 화면
+
 <img width="1228" height="779" alt="image" src="https://github.com/user-attachments/assets/f64bd562-c0d5-45b9-a89d-689f57306cbb" />
 <img width="706" height="707" alt="image" src="https://github.com/user-attachments/assets/2c4fff5a-f668-4e52-b768-c18cd685d74c" />
 

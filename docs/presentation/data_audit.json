@@ -1,0 +1,143 @@
+{
+  "source_commit": "6b46bd6cc5cdccb32e78ae2f7283a4b4f9dcfa5f",
+  "data": {
+    "occurrence_arrest_1990_2022.csv": {
+      "rows": 9908,
+      "columns": 9,
+      "year_min": 1990,
+      "year_max": 2022,
+      "year_count": 33,
+      "missing_occurrence": 100,
+      "sha256": "40d6b3faa639c50a1fb746fa1facd1f096bef7c3b9a825c17f80e0c9ee5e0677"
+    },
+    "real_data_evidence_1990_2022.csv": {
+      "rows": 9703,
+      "columns": 17,
+      "year_min": 1990,
+      "year_max": 2022,
+      "year_count": 33,
+      "missing_occurrence": 100,
+      "sha256": "fa2a326d6dcac5335a2aed746a82383eff8c503e52533135a1d8a5822dce54ec",
+      "crime_type_original_unique": 849
+    },
+    "csi_time_machine_1990_2022.csv": {
+      "rows": 9603,
+      "columns": 31,
+      "year_min": 1990,
+      "year_max": 2022,
+      "year_count": 33,
+      "missing_occurrence": 0,
+      "sha256": "4e34d232b9f25be7d86e8ae731283fbad3a03a819162588933b3257eb23c2cf5",
+      "crime_type_original_unique": 845,
+      "core_rows": 330,
+      "core_crimes": 10,
+      "core_years": {
+        "강간": 33,
+        "강도": 33,
+        "공갈": 33,
+        "방화": 33,
+        "사기": 33,
+        "살인": 33,
+        "상해": 33,
+        "야간주거침입절도": 33,
+        "특수절도": 33,
+        "협박": 33
+      },
+      "region_labels": [
+        "범위확인필요"
+      ]
+    },
+    "region_crime_final_1994_2024.csv": {
+      "rows": 56616,
+      "columns": 13,
+      "year_min": 2011,
+      "year_max": 2024,
+      "year_count": 14,
+      "missing_occurrence": 15888,
+      "sha256": "2f9617341013404a5b27925c76040a539635a0c2162b5c6d401c2e27b4983042",
+      "city_unique": 7,
+      "region_full_unique": 75,
+      "crime_type_original_unique": 54,
+      "duplicate_rows_actual": 0,
+      "region_match_false": 0,
+      "source_files": [
+        "135_TX_13501_A048_20260915163340.csv"
+      ],
+      "suspect_district_labels": [
+        "남구구",
+        "동구구",
+        "북구구",
+        "서구구",
+        "중구구"
+      ]
+    }
+  },
+  "observations": [
+    "지역 최종 CSV의 실제 기간은 2011–2024. 파일명의 1994–2024와 다름.",
+    "20번 지역 생성 스크립트는 파일 루프 밖에서 후속 처리를 수행해 마지막 파일만 frames에 추가하는 구조. 재생성은 하지 않음.",
+    "지역 표기 중 중구구 등 구 접미사 중복 존재.",
+    "장기 시계열 region 값은 범위확인필요. 원문 집계 지역을 확정하지 않고 전국 통계로 호칭하지 않음.",
+    "인구 분모와 범죄율 계산은 현재 앱에 없음.",
+    "학습 효과, 탐지 정확도, 추리 정답률은 측정하지 않음."
+  ],
+  "local_example": [
+    {
+      "year": 2011,
+      "occurrence_count": 1603.0
+    },
+    {
+      "year": 2012,
+      "occurrence_count": 1556.0
+    },
+    {
+      "year": 2013,
+      "occurrence_count": 1574.0
+    },
+    {
+      "year": 2014,
+      "occurrence_count": 1603.0
+    },
+    {
+      "year": 2015,
+      "occurrence_count": 1593.0
+    },
+    {
+      "year": 2016,
+      "occurrence_count": 1542.0
+    },
+    {
+      "year": 2017,
+      "occurrence_count": 1385.0
+    },
+    {
+      "year": 2018,
+      "occurrence_count": 1133.0
+    },
+    {
+      "year": 2019,
+      "occurrence_count": 1020.0
+    },
+    {
+      "year": 2020,
+      "occurrence_count": 1126.0
+    },
+    {
+      "year": 2021,
+      "occurrence_count": 959.0
+    },
+    {
+      "year": 2022,
+      "occurrence_count": 986.0
+    },
+    {
+      "year": 2023,
+      "occurrence_count": 987.0
+    },
+    {
+      "year": 2024,
+      "occurrence_count": 1105.0
+    }
+  ],
+  "local_2011_2024_change_pct": -31.06674984404242,
+  "local_2024_yoy_pct": 11.955420466058776
+}
