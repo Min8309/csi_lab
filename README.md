@@ -12,6 +12,8 @@
 - Safety LAB: 범죄 유형별 일반 예방 행동 안내
 
 서비스: https://csilab-kr.streamlit.app/
+----
+[CSI_LAB_교육프로젝트_전면개편.pptx](https://github.com/user-attachments/files/33614795/CSI_LAB_._.pptx)
 
 ## 새 발표 자료
 
